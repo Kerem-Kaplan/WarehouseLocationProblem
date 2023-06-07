@@ -16,10 +16,45 @@ namespace WarehouseLocationProblem
             List<decimal> cost = readInput.ReadCost();
             decimal[,] customers = readInput.ReadCustomer();
 
-            var customer = new Dictionary<int, int>();
+            decimal totalWarehouse = capacity[0];
+            decimal totalCustomer = cost[0];
 
-            for (int i = 0; i < cost[0]; i++)
+            var customer = new Dictionary<int, int>();
+            decimal totalCapacity = 0;
+            decimal totalCost = 0;
+
+
+
+            for (int i = 0; i < totalCustomer; i++)
             {
+                decimal minPriceForcustomer = 0;
+                decimal tempPriceForcustomer = 0;
+                decimal bestPriceForCustomer = 0;
+                int numberOfWarehouse = 0;
+                for (int j = 0; j < totalWarehouse; j++)
+                {
+
+                    if (customers[i, j + 1] >= cost[j + 1])
+                    {
+
+                        minPriceForcustomer = customers[i, j + 1];
+
+                        if (tempPriceForcustomer > minPriceForcustomer)
+                        {
+                            bestPriceForCustomer = minPriceForcustomer;
+                            numberOfWarehouse = j;
+                        }
+                        if (bestPriceForCustomer == 0)
+                        {
+                            bestPriceForCustomer = minPriceForcustomer;
+                            numberOfWarehouse = j;
+                        }
+                        tempPriceForcustomer = minPriceForcustomer;
+
+
+                    }
+                }
+                capacity[numberOfWarehouse + 1] = capacity[numberOfWarehouse + 1] - customers[i, 0];
 
             }
 
