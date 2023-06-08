@@ -19,44 +19,111 @@ namespace WarehouseLocationProblem
             decimal totalWarehouse = capacity[0];
             decimal totalCustomer = cost[0];
 
-            var customer = new Dictionary<int, int>();
-            decimal totalCapacity = 0;
-            decimal totalCost = 0;
+            int[] warehouseOfCustomer = new int[Convert.ToInt32(cost[0])];
+
+            decimal[] warehouseCost = new decimal[Convert.ToInt32(capacity[0])];
 
 
+            for (int j = 0; j < totalCustomer; j++)
+            {
+                decimal minPriceForCustomer = 0;
+                decimal bestPriceForCustomer = 0;
+                int numberOfWarehouse = 0;
+                for (int k = 0; k < capacity[0]; k++)
+                {
+                    if (customers[j, 0] > capacity[k + 1])
+                    {
+                        continue;
+                    }
+                    minPriceForCustomer = customers[j, k + 1];
+                    if (bestPriceForCustomer == 0)
+                    {
+                        bestPriceForCustomer = minPriceForCustomer;
+                        numberOfWarehouse = k;
+
+                    }
+                    if (minPriceForCustomer < bestPriceForCustomer)
+                    {
+                        bestPriceForCustomer = minPriceForCustomer;
+                        numberOfWarehouse = k;
+                    }
+                }
+
+                capacity[numberOfWarehouse + 1] = capacity[numberOfWarehouse + 1] - customers[j, 0];
+
+                if (capacity[numberOfWarehouse + 1] > 0)
+                {
+                    warehouseOfCustomer[j] = numberOfWarehouse;
+                    warehouseCost[numberOfWarehouse] += bestPriceForCustomer;
+                }
+                else
+                {
+                    capacity[numberOfWarehouse + 1] = capacity[numberOfWarehouse + 1] + customers[j, 0];
+                }
+
+            }
+            decimal optimalCost = 0;
+            for (int n = 0; n < warehouseCost.Length; n++)
+            {
+                optimalCost += warehouseCost[n];
+            }
+            Console.WriteLine(optimalCost);
+            for (int m = 0; m < warehouseOfCustomer.Length; m++)
+            {
+                Console.Write(warehouseOfCustomer[m] + " ");
+            }
+            Console.ReadLine();
+
+
+
+            /*decimal optimalCost = 0;
+            decimal tempCost = 0;
+
+            int[] warehouseOfCustomer = new int[Convert.ToInt32(cost[0])];
 
             for (int i = 0; i < totalCustomer; i++)
             {
                 decimal minPriceForcustomer = 0;
-                decimal tempPriceForcustomer = 0;
                 decimal bestPriceForCustomer = 0;
                 int numberOfWarehouse = 0;
                 for (int j = 0; j < totalWarehouse; j++)
                 {
-
                     if (customers[i, j + 1] >= cost[j + 1])
                     {
-
-                        minPriceForcustomer = customers[i, j + 1];
-
-                        if (tempPriceForcustomer > minPriceForcustomer)
+                        if (customers[i, 0] <= capacity[j + 1])
                         {
-                            bestPriceForCustomer = minPriceForcustomer;
-                            numberOfWarehouse = j;
-                        }
-                        if (bestPriceForCustomer == 0)
-                        {
-                            bestPriceForCustomer = minPriceForcustomer;
-                            numberOfWarehouse = j;
-                        }
-                        tempPriceForcustomer = minPriceForcustomer;
+                            minPriceForcustomer = customers[i, j + 1];
+                            if (bestPriceForCustomer == 0)
+                            {
+                                tempCost = 0;
+                                bestPriceForCustomer = minPriceForcustomer;
+                                tempCost += customers[i, j + 1];
+                                numberOfWarehouse = j;
+                            }
+                            if (minPriceForcustomer < bestPriceForCustomer)
+                            {
+                                tempCost = 0;
+                                bestPriceForCustomer = minPriceForcustomer;
+                                numberOfWarehouse = j;
+                                tempCost += customers[i, j + 1];
+                            }
 
-
+                        }
                     }
                 }
+                warehouseOfCustomer[i] = numberOfWarehouse;
                 capacity[numberOfWarehouse + 1] = capacity[numberOfWarehouse + 1] - customers[i, 0];
-
+                optimalCost += tempCost;
             }
+
+            Console.WriteLine(optimalCost + "\n");
+
+            for (int i = 0; i < warehouseOfCustomer.Length; i++)
+            {
+                Console.Write(warehouseOfCustomer[i] + " ");
+            }
+
+            Console.ReadLine();*/
 
             /*
             decimal totalCost = 0;
